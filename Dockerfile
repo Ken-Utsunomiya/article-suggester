@@ -12,12 +12,3 @@ RUN go mod download
 
 # Expose the port the app will be running on
 EXPOSE 8080
-
-# Set environment variables
-ENV ENVIRONMENT=development
-
-# Build the app
-RUN go build -o main .
-
-# Start the app
-CMD ["/app/main"]
