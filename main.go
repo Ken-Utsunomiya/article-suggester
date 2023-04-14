@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+	"os"
+
+	"github.com/projects/article-suggester/handler/router"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	port := os.Getenv("PORT")
+	mux := router.NewRouter()
+	http.ListenAndServe(port, mux)
 }
