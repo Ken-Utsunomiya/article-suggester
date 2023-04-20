@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/projects/article-suggester/src/handler"
+	"github.com/projects/article-suggester/handler"
 )
 
 func NewRouter() *http.ServeMux {

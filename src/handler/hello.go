@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/projects/article-suggester/src/model"
+	"github.com/projects/article-suggester/model"
 )
 
 type HelloHandler struct{}
