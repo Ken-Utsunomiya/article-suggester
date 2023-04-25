@@ -9,7 +9,7 @@ import (
 func NewRouter() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/hello", handler.NewHelloHandler().ServeHTTP)
+	mux.HandleFunc("/slack/command", handler.NewHelloHandler().ServeHTTP)
 
 	return mux
 }
