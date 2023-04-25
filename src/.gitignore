@@ -14,14 +14,3 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 .env
-
-# -------------------------------------------------------------------------
-#  Local .terraform directories
-**/.terraform/*
-
-# .tfstate files
-*.tfstate
-*.tfstate.*
-
-# .tfvars files
-*.tfvars
