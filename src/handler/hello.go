@@ -2,41 +2,44 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
-	"github.com/projects/article-suggester/model"
+	"github.com/slack-go/slack"
 )
 
-type HelloHandler struct{}
+type SlackCommandHandler struct{}
 
-func NewHelloHandler() *HelloHandler {
-	return &HelloHandler{}
+func NewSlackCommandHandler() *SlackCommandHandler {
+	return &SlackCommandHandler{}
 }
 
-func (h *HelloHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodPost:
-		var req model.Request
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+func (h *SlackCommandHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// only accepts POST request
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// parse the request of slash command
+	s, err := slack.SlashCommandParse(r)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	switch s.Command {
+	case "/hello":
+		params := &slack.Msg{Text: fmt.Sprintf("hello %s", s.UserName)}
+		b, err := json.Marshal(params)
+		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		if req.Message == "" {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		res := &model.HelloResponse{
-			Message: "hello",
-		}
-		// if err != nil {
-		// 	w.WriteHeader(http.StatusInternalServerError)
-		// 	return
-		// }
-
-		if err := json.NewEncoder(w).Encode(&res); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(b)
+	case "/qiita":
+		// TODO
 	default:
 		w.WriteHeader(http.StatusBadRequest)
 	}
