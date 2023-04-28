@@ -30,13 +30,14 @@ func (h *SlackCommandHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 
 	switch s.Command {
 	case "/hello":
-		params := &slack.Msg{Text: fmt.Sprintf("hello %s", s.UserName)}
+		params := &slack.Msg{
+			Text: fmt.Sprintf("hello %s!", s.UserName),
+		}
 		b, err := json.Marshal(params)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		w.Header().Set("Content-Type", "application/json")
 		w.Write(b)
 	case "/qiita":
 		// TODO
